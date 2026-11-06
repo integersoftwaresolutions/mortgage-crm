@@ -14,8 +14,8 @@ This is the backend API server for the Mortgage Real Estate CRM system, built wi
 - **PDF-lib** - PDF manipulation
 - **OpenAI** - AI-powered text extraction
 - **Google Generative AI** - Alternative AI text extraction
-- **Firebase Admin** - File storage service
-- **PM2** - Process manager for production
+- **AWS S3** - File storage
+- **PM2** - Optional process manager. The Render API service runs `npm start`
 - **Joi** - Request validation
 
 ## Prerequisites
@@ -354,8 +354,8 @@ The system supports three user roles:
 ## Key Features
 
 - **Authentication & Authorization** - JWT-based auth with role-based access control (RBAC)
-- **File Upload & Processing** - Support for PDF, images, and documents with Firebase or local storage
-- **Text Extraction** - OCR (Tesseract.js) and AI-powered text extraction (OpenAI/Google Generative AI)
+- **File Upload & Processing** - PDF, Word, spreadsheets, and images stored in AWS S3
+- **Text Extraction** - Tesseract.js OCR for scans and images; OpenAI for field extraction and the document assistant
 - **Email Service** - Email verification and password reset with OTP
 - **Document Generation** - PDF document generation from templates with field placements
 - **Data Validation** - Request validation using Joi
@@ -504,7 +504,7 @@ Ensure all production environment variables are set:
 - Use production MongoDB URI
 - Configure production email service
 - Set `NODE_ENV=production`
-- Configure Firebase Storage for production file storage (optional)
+- Production host is Render. Set S3, Mongo, SMTP, OpenAI, and Stripe in the Render API environment
 
 ## Support
 

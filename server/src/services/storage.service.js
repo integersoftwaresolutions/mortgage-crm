@@ -70,7 +70,7 @@ function getAwsClientConfig(region) {
     };
   }
 
-  // In ECS, this falls back to task-role credentials from metadata.
+  // Render has no IAM role. Empty keys use the SDK default chain (local profiles).
   return { region };
 }
 

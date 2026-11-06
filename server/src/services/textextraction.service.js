@@ -1,7 +1,7 @@
 const { convertFileToMarkdown } = require("./document/markdownConversion.service");
 
-async function extractTextFromFile(file, options = {}) {
-  const { plainText } = await convertFileToMarkdown(file, options);
+async function extractTextFromFile(file) {
+  const { plainText } = await convertFileToMarkdown(file);
   return plainText;
 }
 

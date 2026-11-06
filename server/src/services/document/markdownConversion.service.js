@@ -14,8 +14,7 @@ function resolveBuffer(file) {
   return buffer;
 }
 
-async function convertFileToMarkdown(file, options = {}) {
-  const { storagePath = null } = options;
+async function convertFileToMarkdown(file) {
   const buffer = resolveBuffer(file);
   const fileName = resolveFileName(file);
   const type = detectDocumentType({
@@ -26,7 +25,6 @@ async function convertFileToMarkdown(file, options = {}) {
   const result = await convertByType(type, {
     buffer,
     fileName,
-    storagePath,
   });
 
   return {

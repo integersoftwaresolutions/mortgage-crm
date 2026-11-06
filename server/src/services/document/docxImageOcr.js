@@ -1,6 +1,6 @@
 const mammoth = require("mammoth");
 const { formatEmbeddedImageOcrBlock } = require("./markdownFormatters");
-const { detectTextFromBytes } = require("./textract.service");
+const { detectTextFromImage } = require("./ocr.service");
 
 const PLACEHOLDER_PREFIX = "docx-ocr-placeholder://";
 const MIN_IMAGE_BYTES = 2048;
@@ -49,7 +49,7 @@ function createDocxImageOcrSession() {
     }
 
     try {
-      const text = await detectTextFromBytes(buffer);
+      const text = await detectTextFromImage(buffer);
       const block = formatEmbeddedImageOcrBlock(text, index);
       if (!block) {
         skippedCount += 1;
@@ -96,7 +96,7 @@ function createDocxImageOcrSession() {
   }
 
   function getMethod() {
-    return ocrCount > 0 ? "mammoth+textract" : "mammoth";
+    return ocrCount > 0 ? "mammoth+tesseract" : "mammoth";
   }
 
   return {

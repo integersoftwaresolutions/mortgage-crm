@@ -416,12 +416,12 @@ If profile pictures are not displaying:
 
 ## Deployment
 
-The client is configured for deployment on various platforms. For production:
+Production frontend is the Render static site `mortgage-crm` (`https://mortgage-crm-2bhy.onrender.com`). The API is the Render web service `https://mortgage-crm-api.onrender.com`.
 
 1. Build the application: `npm run build`
-2. Deploy the `dist` directory to your hosting service
-3. Ensure environment variables are set in your hosting platform
-4. Configure your hosting service to serve the SPA (Single Page Application) correctly
+2. Render publishes the `dist` directory
+3. Set `VITE_SERVER_URL` to `https://mortgage-crm-api.onrender.com/backend/api`
+4. The host must serve the SPA for client-side routes
 
 ### Environment Variables for Production
 

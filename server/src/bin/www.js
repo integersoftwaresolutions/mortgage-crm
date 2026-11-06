@@ -1,3 +1,4 @@
+const dns = require("dns");
 const mongoose = require("mongoose");
 const app = require("../app");
 const { envConfig, mongoConfig } = require("../config");
@@ -69,7 +70,30 @@ function createHttpServer() {
   });
 }
 
+async function usePublicDnsIfLoopbackRefusesSrv() {
+  const uri = String(mongoConfig.url || "");
+  if (!uri.startsWith("mongodb+srv://")) return;
+
+  const servers = dns.getServers();
+  const onlyLoopback =
+    servers.length > 0 &&
+    servers.every((server) => server === "127.0.0.1" || server === "::1");
+  if (!onlyLoopback) return;
+
+  const host = new URL(uri.replace("mongodb+srv://", "https://")).hostname;
+  try {
+    await dns.promises.resolveSrv(`_mongodb._tcp.${host}`);
+  } catch (error) {
+    if (error?.syscall !== "querySrv" && error?.code !== "ECONNREFUSED") return;
+    dns.setServers(["1.1.1.1", "8.8.8.8"]);
+    console.warn(
+      "Local DNS at 127.0.0.1 refused the MongoDB SRV lookup. Using 1.1.1.1 and 8.8.8.8 for this process."
+    );
+  }
+}
+
 async function startServer() {
+  await usePublicDnsIfLoopbackRefusesSrv();
   await mongoose.connect(mongoConfig.url, mongoConfig.options);
   await normalizeSystemRoles();
   await ensureDefaultSuperAdmin();

@@ -1,11 +1,11 @@
 const { formatOcrTextAsMarkdown } = require("../markdownFormatters");
-const { detectTextFromBytes } = require("../textract.service");
+const { detectTextFromImage } = require("../ocr.service");
 
 async function convertImageToMarkdown({ buffer, fileName }) {
-  const text = await detectTextFromBytes(buffer);
+  const text = await detectTextFromImage(buffer);
   return {
     markdown: formatOcrTextAsMarkdown(fileName, text),
-    method: "textract",
+    method: "tesseract",
   };
 }
 

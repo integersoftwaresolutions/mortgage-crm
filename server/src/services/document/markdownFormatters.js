@@ -23,8 +23,24 @@ function formatPdfTextAsMarkdown(fileName, rawText) {
 }
 
 function formatOcrTextAsMarkdown(fileName, text) {
-  const body = String(text || "").trim();
-  return `${wrapDocumentTitle(fileName)}\n\n## Page 1\n\n${body}`;
+  const pages = String(text || "")
+    .split("\f")
+    .map((page) => page.trim());
+  const hasText = pages.some(Boolean);
+
+  if (!hasText) {
+    return `${wrapDocumentTitle(fileName)}\n\n## Page 1\n\n`;
+  }
+
+  if (pages.length === 1) {
+    return `${wrapDocumentTitle(fileName)}\n\n## Page 1\n\n${pages[0]}`;
+  }
+
+  const body = pages
+    .map((page, index) => `## Page ${index + 1}\n\n${page}`)
+    .join("\n\n");
+
+  return `${wrapDocumentTitle(fileName)}\n\n${body}`;
 }
 
 function formatDocxMarkdown(fileName, markdownBody) {

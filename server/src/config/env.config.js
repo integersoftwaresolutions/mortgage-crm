@@ -80,16 +80,6 @@ const envVarsSchema = Joi.object({
   BEDROCK_TEMPERATURE: Joi.number().min(0).max(2).optional().label("BEDROCK_TEMPERATURE"),
   BEDROCK_TIMEOUT_MS: Joi.number().integer().min(1000).optional().label("BEDROCK_TIMEOUT_MS"),
   BEDROCK_MAX_RETRIES: Joi.number().integer().min(0).optional().label("BEDROCK_MAX_RETRIES"),
-  TEXTRACT_POLL_INTERVAL_MS: Joi.number()
-    .integer()
-    .min(500)
-    .default(2000)
-    .label("TEXTRACT_POLL_INTERVAL_MS"),
-  TEXTRACT_MAX_POLLS: Joi.number()
-    .integer()
-    .min(10)
-    .default(120)
-    .label("TEXTRACT_MAX_POLLS"),
   STRIPE_SECRET_KEY: Joi.string().allow("").optional().label("STRIPE_SECRET_KEY"),
   STRIPE_WEBHOOK_SECRET: Joi.string().allow("").optional().label("STRIPE_WEBHOOK_SECRET"),
   STRIPE_SUCCESS_URL: Joi.string().allow("").optional().label("STRIPE_SUCCESS_URL"),
@@ -150,8 +140,6 @@ module.exports = {
   AWS_SECRET_ACCESS_KEY: envVars.AWS_SECRET_ACCESS_KEY || "",
   S3_BUCKET_NAME: envVars.S3_BUCKET_NAME,
   S3_SIGNED_URL_EXPIRES: Number(envVars.S3_SIGNED_URL_EXPIRES || 3600),
-  TEXTRACT_POLL_INTERVAL_MS: Number(envVars.TEXTRACT_POLL_INTERVAL_MS || 2000),
-  TEXTRACT_MAX_POLLS: Number(envVars.TEXTRACT_MAX_POLLS || 120),
   STRIPE_SECRET_KEY: envVars.STRIPE_SECRET_KEY || "",
   STRIPE_WEBHOOK_SECRET: envVars.STRIPE_WEBHOOK_SECRET || "",
   STRIPE_SUCCESS_URL: envVars.STRIPE_SUCCESS_URL || "",

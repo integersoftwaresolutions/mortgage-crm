@@ -54,9 +54,7 @@ async function uploadMetadata(storagePath, metadata) {
 }
 
 async function attachToSubmissionDocument({ fileDoc, file, context = {} }) {
-  const conversion = await convertFileToMarkdown(file, {
-    storagePath: fileDoc.storage_path,
-  });
+  const conversion = await convertFileToMarkdown(file);
 
   let thumbnail = null;
   try {
