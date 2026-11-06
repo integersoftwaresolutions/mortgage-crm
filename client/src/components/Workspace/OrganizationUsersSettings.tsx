@@ -122,7 +122,7 @@ export default function OrganizationUsersSettings() {
       },
       { title: "Email", dataIndex: "email" },
       {
-        title: "Org Role",
+        title: "Organization role",
         dataIndex: "organizationRole",
         render: (role: OrgRole) => (
           <span className="inline-flex rounded-full border border-card-border px-2.5 py-1 text-xs font-semibold text-text">
@@ -249,6 +249,9 @@ export default function OrganizationUsersSettings() {
         />
       </div>
 
+      <p className="text-sm text-card-text">
+        Edit and remove stay available for members you can change. Owner accounts and protected roles stay disabled, with the reason on hover.
+      </p>
       <DataTable
         loading={loading}
         data={users}

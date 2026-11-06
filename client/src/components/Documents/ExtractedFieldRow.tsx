@@ -5,6 +5,7 @@ import Button from "../Reusable/Button";
 import Surface from "../Reusable/Surface";
 import AvatarGroup from "../Reusable/AvatarGroup";
 import { auditTrailToUserActions } from "../Reusable/UserActionAvatar";
+import { cn } from "../../utils/cn";
 
 type MasterField = {
   _id: string;
@@ -135,12 +136,15 @@ const ExtractedFieldRow: React.FC<ExtractedFieldRowProps> = ({
 
     if (type === "date") {
       return (
-        <input
-          type="date"
-          className={base}
-          value={typeof value === "string" ? value.slice(0, 10) : ""}
-          onChange={(e) => onChange(e.target.value || null)}
-        />
+        <div>
+          <input
+            type="date"
+            className={base}
+            value={typeof value === "string" ? value.slice(0, 10) : ""}
+            onChange={(e) => onChange(e.target.value || null)}
+          />
+          <p className="mt-1 text-xs text-card-text">Input format: YYYY-MM-DD</p>
+        </div>
       );
     }
 
@@ -185,7 +189,13 @@ const ExtractedFieldRow: React.FC<ExtractedFieldRowProps> = ({
   const hasTraceability = submissionField?.source?.document_name || submissionField?.source?.extracted_at;
 
   return (
-    <Surface variant="soft" className="p-2 rounded-lg">
+    <Surface
+      variant="soft"
+      className={cn(
+        "rounded-lg p-2",
+        isMissing && masterField.required && "border-danger ring-1 ring-danger"
+      )}
+    >
       {/* Header Row */}
       <div className="grid grid-cols-12 gap-3 p-3 items-start">
         {/* Left: Field Key + Description + Badges (all together) */}
@@ -211,14 +221,14 @@ const ExtractedFieldRow: React.FC<ExtractedFieldRowProps> = ({
               )}
               {/* Badges */}
               <div className="flex flex-wrap items-center gap-1.5">
-                {masterField.required ? (
-                  <StatusBadge tone="warning">Required</StatusBadge>
-                ) : (
-                  <StatusBadge tone="neutral">Optional</StatusBadge>
-                )}
+                <StatusBadge tone="neutral">
+                  {masterField.required ? "Required" : "Optional"}
+                </StatusBadge>
 
                 {isMissing ? (
-                  <StatusBadge tone="danger">Missing</StatusBadge>
+                  <StatusBadge tone={masterField.required ? "danger" : "warning"}>
+                    {masterField.required ? "Missing required" : "Missing optional"}
+                  </StatusBadge>
                 ) : isReview ? (
                   <StatusBadge tone="warning">Needs Review</StatusBadge>
                 ) : (

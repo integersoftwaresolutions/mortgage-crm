@@ -149,7 +149,7 @@ export default function AssistantDocumentList({
               onIndexDocument ? (
                 <button
                   type="button"
-                  title={indexStatus === "indexed" ? "Reindex document" : "Index document"}
+                  title={indexStatus === "indexed" ? "Refresh document search" : "Index document"}
                   disabled={isIndexing}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -160,7 +160,7 @@ export default function AssistantDocumentList({
                     "hover:border-primary-border hover:bg-card-hover disabled:cursor-not-allowed disabled:opacity-50"
                   )}
                 >
-                  <span>{indexStatus === "indexed" ? "Reindex" : "Index Now"}</span>
+                  <span>{indexStatus === "indexed" ? "Refresh search" : "Index now"}</span>
                   {isIndexing ? (
                     <span className="h-3 w-3 animate-spin rounded-full border-2 border-card-text border-t-transparent" />
                   ) : (

@@ -3,11 +3,26 @@
 @tailwind utilities;
 
 @layer base {
-  html,
+  html {
+    @apply bg-background text-text;
+    font-size: 16px;
+  }
+
   body,
   #root {
-    @apply bg-background text-text;
+    @apply bg-background font-sans text-[15px] leading-normal text-text;
   }
+}
+
+.theme-dark input[type="date"],
+.theme-dark input[type="datetime-local"] {
+  color-scheme: dark;
+}
+
+.theme-dark input[type="date"]::-webkit-calendar-picker-indicator,
+.theme-dark input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 1;
 }
 
 .react-pdf__Page {

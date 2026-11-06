@@ -61,17 +61,17 @@ export function prettyDate(
   const d = parseLooseDate(input);
   if (!d) return "-";
 
-  const withTime = opts.withTime ?? true;
+  const withTime = opts.withTime ?? false;
   const withSeconds = opts.withSeconds ?? false;
   const style: Style = opts.style ?? "medium";
 
   const dateStyleMap: Record<Style, Intl.DateTimeFormatOptions> = {
-    short: { year: "numeric", month: "short", day: "numeric" },
-    medium: { year: "numeric", month: "short", day: "numeric" },
-    long: { year: "numeric", month: "long", day: "numeric" },
+    short: { year: "numeric", month: "short", day: "2-digit" },
+    medium: { year: "numeric", month: "short", day: "2-digit" },
+    long: { year: "numeric", month: "long", day: "2-digit" },
   };
 
-  const dateStr = new Intl.DateTimeFormat(undefined, dateStyleMap[style]).format(
+  const dateStr = new Intl.DateTimeFormat("en-GB", dateStyleMap[style]).format(
     d
   );
 

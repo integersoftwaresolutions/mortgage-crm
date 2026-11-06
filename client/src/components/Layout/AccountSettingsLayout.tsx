@@ -18,8 +18,8 @@ export default function AccountSettingsLayout() {
       <Navbar />
       <div className="pt-14">
         <div className="flex w-full">
-          <Sidebar links={links} />
-          <main className="min-w-0 flex-1 px-4 py-4">
+          <Sidebar links={links} sectionLabel="Account" />
+          <main className="min-w-0 flex-1 px-8 py-8">
             <Outlet />
           </main>
         </div>

@@ -127,7 +127,7 @@ const DonutWorkloadChart: React.FC<DonutWorkloadChartProps> = ({
         )}
         style={chartPlaceholderStyle()}
       >
-        <div className="text-card-text">No data available</div>
+        <div className="text-sm font-medium text-text">No activity in this period</div>
       </div>
     );
   }

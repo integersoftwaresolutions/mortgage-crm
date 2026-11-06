@@ -47,7 +47,7 @@ const IconButton: React.FC<IconButtonProps> = ({
         hoverable && "hover:bg-card-muted-hover"
       );
 
-  const state = disabled || isLoading ? "opacity-60 cursor-not-allowed" : "cursor-pointer";
+  const state = disabled || isLoading ? "cursor-not-allowed opacity-35 saturate-0" : "cursor-pointer";
   const showDisabledHint = Boolean(disabled && !isLoading && disabledTooltip);
   const nativeTitle = showDisabledHint ? undefined : title;
 

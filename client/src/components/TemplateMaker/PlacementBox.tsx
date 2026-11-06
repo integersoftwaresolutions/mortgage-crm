@@ -154,8 +154,8 @@ export default function PlacementBox({
 
   // handle styles
   const handleBase =
-    "absolute z-20 bg-white/90 border border-black/20 rounded-[3px]";
-  const handleSize = "w-2.5 h-2.5"; // ~10px
+    "absolute z-20 rounded-sm border border-primary bg-background";
+  const handleSize = "h-2 w-2";
 
   const handles: { dir: ResizeDir; cls: string; cursor: string }[] = [
     { dir: "nw", cls: "left-[-5px] top-[-5px]", cursor: "nwse-resize" },
@@ -192,8 +192,8 @@ export default function PlacementBox({
         "bg-card text-card-text",
         dragging ? "cursor-grabbing" : "cursor-grab",
         selected
-          ? "bg-primary border-primary-border text-primary-text"
-          : "border-card-border hover:border-secondary-border",
+          ? "border-primary bg-[color-mix(in_srgb,var(--color-primary)_28%,transparent)] text-text"
+          : "border-[color-mix(in_srgb,var(--color-primary)_55%,transparent)] bg-[color-mix(in_srgb,var(--color-primary)_12%,transparent)] text-text",
       ].join(" ")}
       style={{
         left: px.left,

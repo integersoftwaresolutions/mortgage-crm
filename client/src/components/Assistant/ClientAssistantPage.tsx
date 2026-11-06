@@ -9,7 +9,6 @@ import AssistantDocumentList from "./AssistantDocumentList";
 import DocumentAssistantChat from "./DocumentAssistantChat";
 import Button from "../Reusable/Button";
 import PageHeader from "../Reusable/PageHeader";
-import Surface from "../Reusable/Surface";
 import {
   getFileId,
   getFileName,
@@ -177,7 +176,7 @@ export default function ClientAssistantPage() {
     <div className="mx-auto max-w-7xl space-y-4 px-2 py-2 md:px-6 md:py-4">
       <PageHeader
         back={{ label: "Back to clients", onClick: () => navigate(submissionsPath) }}
-        title="Document assistant"
+        title={`Document assistant · ${clientName}`}
         description={
           <>
             Ask questions about <span className="font-medium text-text">{clientName}</span>
@@ -198,7 +197,7 @@ export default function ClientAssistantPage() {
             >
               <span className="inline-flex items-center gap-2">
                 <FiRefreshCw />
-                Reindex
+                Refresh document search
               </span>
             </Button>
             <Button variant="secondary" type="button" onClick={() => navigate(submissionManagePath)}>
@@ -208,25 +207,25 @@ export default function ClientAssistantPage() {
         }
       />
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(260px,300px)_minmax(0,1fr)] lg:items-stretch">
-        <aside className={`flex flex-col gap-2 ${PANEL_HEIGHT_CLASS}`}>
-          {docCount === 0 ? (
-            <Surface variant="soft" className="flex min-h-0 flex-1 flex-col justify-center p-6 text-center">
-              <p className="text-sm font-medium text-text">No documents uploaded</p>
-              <p className="mt-1 text-xs text-card-text">
-                Upload documents in the client workflow first.
-              </p>
-              <Button
-                variant="primary"
-                type="button"
-                className="mt-4"
-                onClick={() => navigate(submissionManagePath)}
-              >
-                Go to documents
-              </Button>
-            </Surface>
-          ) : (
-            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain rounded-xl border border-card-border bg-card">
+      {docCount === 0 ? (
+        <div className="flex min-h-[280px] flex-col items-center justify-center rounded-xl border border-dashed border-card-border bg-card p-8 text-center">
+          <p className="text-sm font-medium text-text">No documents uploaded</p>
+          <p className="mt-1 max-w-sm text-sm text-card-text">
+            Upload documents in the client workflow before asking questions.
+          </p>
+          <Button
+            variant="primary"
+            type="button"
+            className="mt-4"
+            onClick={() => navigate(submissionManagePath)}
+          >
+            Go to documents
+          </Button>
+        </div>
+      ) : (
+        <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start">
+          <aside className="w-[280px] max-w-full">
+            <div className="overflow-y-auto overscroll-contain rounded-xl border border-card-border bg-card">
               <AssistantDocumentList
                 documents={sortedDocs}
                 scopeFileId={scopeFileId}
@@ -236,25 +235,20 @@ export default function ClientAssistantPage() {
                 onIndexDocument={handleIndexDocument}
               />
             </div>
-          )}
-        </aside>
-
-        <div className={PANEL_HEIGHT_CLASS}>
-          {docCount > 0 && submission._id ? (
-            <DocumentAssistantChat
-              submissionId={submission._id}
-              documents={documentOptions}
-              scopeFileId={scopeFileId}
-              scopeLabel={activeScopeLabel}
-              onReindexComplete={setIndexStatus}
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center rounded-2xl border border-dashed border-card-border bg-card-muted p-8 text-center text-sm text-card-text">
-              Upload documents to start asking questions.
-            </div>
-          )}
+          </aside>
+          <div className={PANEL_HEIGHT_CLASS}>
+            {submission._id ? (
+              <DocumentAssistantChat
+                submissionId={submission._id}
+                documents={documentOptions}
+                scopeFileId={scopeFileId}
+                scopeLabel={activeScopeLabel}
+                onReindexComplete={setIndexStatus}
+              />
+            ) : null}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

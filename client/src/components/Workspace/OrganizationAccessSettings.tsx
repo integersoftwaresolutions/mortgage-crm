@@ -17,7 +17,6 @@ import Input from "../Reusable/Inputs/Input";
 import Checkbox from "../Reusable/Checkbox";
 import IconButton from "../Reusable/IconButton";
 import Callout from "../Reusable/Callout";
-import StatCard from "../Reusable/StatCard";
 import Segmented from "../Reusable/Segmented";
 import Surface from "../Reusable/Surface";
 import DataTable from "../Reusable/DataTable";
@@ -355,7 +354,7 @@ function RolesPanel({
             </h2>
             <p className="mt-1 max-w-xl text-sm text-card-text">
               {scope === "organization"
-                ? "Org-wide: profile, billing, members, RBAC, and creating workspaces."
+                ? "Organization-wide: profile, billing, members, roles, and creating workspaces."
                 : "Per workspace: submissions, templates, leads, extraction, audit, and workspace users."}
             </p>
           </div>
@@ -485,37 +484,32 @@ export default function OrganizationAccessSettings() {
     <div className="mx-auto max-w-5xl space-y-8 pb-8">
       <PageHeader
         title="Roles & permissions"
-        description="Define organization and workspace roles by choosing exact API permissions. Assign roles to people from Organization → Users."
+        description="Choose what each organization and workspace role can do. Assign roles from Organization users."
       />
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <StatCard title="Org roles" value={stats.org} loading={loading} icon={<FiShield className="h-5 w-5" />} />
-        <StatCard title="Workspace roles" value={stats.ws} loading={loading} icon={<FiLayers className="h-5 w-5" />} />
-        <StatCard title="Custom (org)" value={stats.customOrg} loading={loading} />
-        <StatCard title="Custom (ws)" value={stats.customWs} loading={loading} />
+        {[
+          { label: "Organization roles", value: stats.org },
+          { label: "Workspace roles", value: stats.ws },
+          { label: "Custom organization", value: stats.customOrg },
+          { label: "Custom workspace", value: stats.customWs },
+        ].map((item) => (
+          <div key={item.label} className="rounded-xl border border-card-border bg-card px-4 py-3">
+            <div className="text-xs font-medium text-card-text">{item.label}</div>
+            <div className="mt-1 text-xl font-semibold text-text">{loading ? "—" : item.value}</div>
+          </div>
+        ))}
       </div>
 
-      <Surface variant="soft" className="p-1.5 shadow-none">
-        <Segmented<Tab>
-          value={tab}
-          onChange={setTab}
-          className="!grid-cols-1 sm:!grid-cols-2"
-          options={[
-            {
-              key: "organization",
-              label: "Organization roles",
-              description: "Billing, members, workspaces, RBAC",
-              icon: <FiShield className="h-5 w-5 text-primary" />,
-            },
-            {
-              key: "workspace",
-              label: "Workspace roles",
-              description: "Submissions, templates, leads, users",
-              icon: <FiLayers className="h-5 w-5 text-primary" />,
-            },
-          ]}
-        />
-      </Surface>
+      <Segmented<Tab>
+        variant="tabs"
+        value={tab}
+        onChange={setTab}
+        options={[
+          { key: "organization", label: "Organization roles" },
+          { key: "workspace", label: "Workspace roles" },
+        ]}
+      />
 
       {tab === "organization" ? (
         <RolesPanel

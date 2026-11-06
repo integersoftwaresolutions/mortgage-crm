@@ -311,7 +311,7 @@ export default function SuperAdminPlansPage() {
                 <div>
                   <h3 className="text-lg font-semibold text-text">{plan.name}</h3>
                   <p className="text-xs uppercase tracking-wide text-card-text">{plan.code}</p>
-                  <p className="mt-1 text-sm text-card-text">{plan.description || "No description provided."}</p>
+                  {plan.description ? <p className="mt-1 text-sm text-card-text">{plan.description}</p> : null}
                   <p className="mt-2 text-sm font-semibold text-text">
                     {plan.pricing?.display?.monthly || "-"} monthly · {plan.pricing?.display?.yearly || "-"} yearly
                   </p>

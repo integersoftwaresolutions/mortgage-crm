@@ -115,8 +115,8 @@ const OrganizationSettings: React.FC = () => {
                       />
                     </div>
                   ) : (
-                    <div className="h-20 w-20 min-w-[5rem] rounded-xl border border-card-border bg-background flex items-center justify-center text-card-text text-xs text-center px-2 leading-tight">
-                      No Logo
+                    <div className="flex h-20 w-20 items-center justify-center rounded-xl border border-card-border bg-primary text-xl font-semibold text-primary-text">
+                      {(org?.name || "O").slice(0, 2).toUpperCase()}
                     </div>
                   )}
                 </button>
@@ -128,7 +128,7 @@ const OrganizationSettings: React.FC = () => {
             </DropdownMenu>
           </div>
           <div className="min-w-0">
-            <h1 className="text-3xl font-bold text-text leading-tight">{org?.name || "Organization"}</h1>
+            <h1 className="text-[28px] font-semibold leading-tight text-text">{org?.name || "Organization"}</h1>
             <p className="text-sm text-card-text mt-1">Manage organization identity and profile.</p>
           </div>
           </div>
@@ -153,16 +153,16 @@ const OrganizationSettings: React.FC = () => {
       <section className="rounded-2xl border border-card-border bg-card p-4 md:p-5">
         <h2 className="text-lg font-semibold text-text mb-4">Company Profile</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input name="organizationName" placeholder="Organization name" value={name} onChange={(e) => setName(e.target.value)} />
-          <Input name="legalName" placeholder="Legal name" value={legalName} onChange={(e) => setLegalName(e.target.value)} />
-          <Input name="website" placeholder="Website" value={website} onChange={(e) => setWebsite(e.target.value)} />
-          <Input name="industry" placeholder="Industry" value={industry} onChange={(e) => setIndustry(e.target.value)} />
-          <Input name="companySize" placeholder="Company size" value={size} onChange={(e) => setSize(e.target.value)} />
-          <Input name="contactEmail" placeholder="Contact email" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} />
-          <Input name="phone" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+          <Input name="organizationName" label="Organization name" value={name} onChange={(e) => setName(e.target.value)} />
+          <Input name="legalName" label="Legal name" value={legalName} onChange={(e) => setLegalName(e.target.value)} />
+          <Input name="website" label="Website" value={website} onChange={(e) => setWebsite(e.target.value)} />
+          <Input name="industry" label="Industry" value={industry} onChange={(e) => setIndustry(e.target.value)} />
+          <Input name="companySize" label="Company size" value={size} onChange={(e) => setSize(e.target.value)} />
+          <Input name="contactEmail" label="Contact email" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} />
+          <Input name="phone" label="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
           <Input
             name="organizationAddress"
-            placeholder="Organization address"
+            label="Address"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             className="md:col-span-2"

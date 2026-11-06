@@ -86,11 +86,21 @@ export default function TemplatesPage() {
 
   const columns = useMemo(
     () => [
-      { title: "Name", dataIndex: "name" },
-      { title: "Pages", dataIndex: "pageCount" },
+      {
+        title: "Name",
+        dataIndex: "name",
+        render: (value: string) => <span className="font-semibold text-text">{value}</span>,
+      },
+      {
+        title: "Pages",
+        dataIndex: "pageCount",
+        width: 90,
+        render: (value: number) => <span className="text-sm text-card-text">{value}</span>,
+      },
       {
         title: "Created",
         dataIndex: "createdAt",
+        width: 140,
         render: (v: any) => (
           <span className="text-sm text-card-text">
             {v ? prettyDate(v) : "-"}
@@ -100,18 +110,20 @@ export default function TemplatesPage() {
       {
         title: "Actions",
         dataIndex: "actions",
+        width: 320,
+        minWidth: 320,
         render: (_: any, row: TemplateDoc) => (
-          <div className="flex gap-2">
+          <div className="flex justify-end gap-2">
             <Button
-              variant="secondary"
+              variant="primary"
               onClick={() => navigate(`${row._id}/manage`)}
               disabled={!canOpenTemplateManage}
               disabledTooltip={!canOpenTemplateManage ? PERMISSION_TOOLTIPS.manageTemplate : undefined}
             >
-              Manage
+              Edit template
             </Button>
             <Button
-              variant="danger"
+              variant="danger-soft"
               onClick={() => setDeleteTarget(row)}
               disabled={!canManageTemplates}
               disabledTooltip={!canManageTemplates ? PERMISSION_TOOLTIPS.createTemplate : undefined}
@@ -129,7 +141,7 @@ export default function TemplatesPage() {
   );
 
   return (
-    <div className="mx-auto space-y-6 p-2 md:p-6">
+    <div className="mx-auto space-y-6">
       <PageHeader
         title="Templates"
         description="Create templates and manage field placements on PDFs."

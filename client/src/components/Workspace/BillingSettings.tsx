@@ -5,7 +5,8 @@ import PlanCard from "../Reusable/PlanCard";
 import Segmented from "../Reusable/Segmented";
 import Modal from "../Reusable/Modal";
 import { BillingCycle, BillingService, Plan } from "../../service/billingService";
-import { FiCalendar, FiCreditCard, FiExternalLink, FiRefreshCw, FiXCircle } from "react-icons/fi";
+import { FiCreditCard, FiExternalLink, FiRefreshCw, FiXCircle } from "react-icons/fi";
+import { prettyDate } from "../../utils/date";
 
 export default function BillingSettings() {
   const [billing, setBilling] = useState<any>(null);
@@ -39,16 +40,7 @@ export default function BillingSettings() {
   const subscription = billing?.subscription;
   const canUseProduct = Boolean(billing?.access?.canUseProduct);
 
-  const formatDate = (value?: string | null) => {
-    if (!value) return "-";
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return "-";
-    return new Intl.DateTimeFormat("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "2-digit",
-    }).format(date);
-  };
+  const formatDate = (value?: string | null) => (value ? prettyDate(value) : "-");
 
   const statusMeta = useMemo(() => {
     if (!subscription) return { label: "Not started" };
@@ -92,27 +84,26 @@ export default function BillingSettings() {
       ) : null}
 
       {!loading && billing?.subscription ? (
-        <div className="rounded-2xl border border-card-border bg-card p-4 text-sm">
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+        <div className="rounded-xl border border-card-border bg-card p-6 text-sm">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             <div>
-              <div className="text-card-text">Status</div>
-              <div className="font-semibold text-text">{statusMeta.label}</div>
+              <div className="text-xs text-card-text">Status</div>
+              <div className="mt-1 font-semibold text-text">{statusMeta.label}</div>
             </div>
             <div>
-              <div className="text-card-text">Current plan</div>
-              <div className="font-semibold text-text">{billing.subscription.plan?.name || billing.subscription.planSnapshot?.name}</div>
+              <div className="text-xs text-card-text">Plan</div>
+              <div className="mt-1 font-semibold text-text">{billing.subscription.plan?.name || billing.subscription.planSnapshot?.name}</div>
             </div>
             <div>
-              <div className="text-card-text">Billing cycle</div>
-              <div className="font-semibold capitalize text-text">{billing.subscription.billingCycle || "-"}</div>
+              <div className="text-xs text-card-text">Billing cycle</div>
+              <div className="mt-1 font-semibold capitalize text-text">{billing.subscription.billingCycle || "-"}</div>
+            </div>
+            <div>
+              <div className="text-xs text-card-text">Renewal</div>
+              <div className="mt-1 font-semibold text-text">{formatDate(subscription?.currentPeriodEnd)}</div>
             </div>
           </div>
-          <div className="mt-3 rounded-xl border border-card-border bg-background/40 px-3 py-2 text-xs text-card-text">
-            <span className="inline-flex items-center gap-2">
-              <FiCalendar size={14} className="text-card-text" />
-              {renewalMessage}
-            </span>
-          </div>
+          <div className="mt-4 text-sm text-card-text">{renewalMessage}</div>
           {!canUseProduct ? (
             <div className="mt-3 rounded-xl border border-warning-border bg-warning-muted px-3 py-2 text-xs text-warning">
               Access is currently restricted. Complete payment or update billing details to restore full access.
@@ -120,7 +111,7 @@ export default function BillingSettings() {
           ) : null}
           <div className="mt-4 flex flex-wrap gap-2">
             <Button
-              variant="secondary"
+              variant="primary"
               isLoading={actionLoading === "portal"}
               onClick={async () => {
                 try {
@@ -134,7 +125,7 @@ export default function BillingSettings() {
             >
               <span className="inline-flex items-center gap-2">
                 <FiExternalLink size={14} />
-                Open billing portal
+                Manage billing
               </span>
             </Button>
             {subscription.cancelAtPeriodEnd ? (
@@ -150,7 +141,7 @@ export default function BillingSettings() {
               </Button>
             ) : (
               <Button
-                variant="warning"
+                variant="danger-soft"
                 isLoading={actionLoading === "cancel"}
                 onClick={() => setConfirmAction("cancel")}
               >
@@ -167,14 +158,26 @@ export default function BillingSettings() {
       <div className="space-y-3 rounded-2xl border border-card-border bg-card p-4">
         <h2 className="text-lg font-semibold text-text">Usage vs limits</h2>
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-          {usageRows.map((row: any) => (
-            <div key={row.key} className="rounded-xl border border-card-border p-3 text-sm">
-              <div className="font-semibold text-text">{row.label}</div>
-              <div className="text-card-text">
-                {row.usage} / {row.unlimited ? "Unlimited" : row.limit ?? 0}
+          {usageRows.map((row: any) => {
+            const limit = row.unlimited ? null : Number(row.limit || 0);
+            const usage = Number(row.usage || 0);
+            const percent = limit && limit > 0 ? Math.min(100, Math.round((usage / limit) * 100)) : 0;
+            return (
+              <div key={row.key} className="text-sm">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="font-medium text-text">{row.label}</div>
+                  <div className="text-card-text">
+                    {usage} / {row.unlimited ? "Unlimited" : limit ?? 0}
+                  </div>
+                </div>
+                {!row.unlimited ? (
+                  <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-background">
+                    <div className="h-full rounded-full bg-primary" style={{ width: `${percent}%` }} />
+                  </div>
+                ) : null}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

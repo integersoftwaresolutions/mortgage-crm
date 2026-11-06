@@ -317,8 +317,8 @@ export default function TemplateDesignerPage() {
 
           <aside
             className={cn(
-              "hidden min-h-0 w-72 shrink-0 flex-col overflow-hidden",
-              "border-l border-card-border bg-card lg:flex xl:w-80",
+              "hidden min-h-0 w-[280px] shrink-0 flex-col overflow-hidden",
+              "border-l border-card-border bg-card lg:flex",
             )}
           >
             <div className="min-h-0 flex-1 overflow-y-auto p-3">{inspector}</div>

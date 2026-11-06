@@ -77,6 +77,7 @@ export default function ListFilterPanel({
               placeholder={
                 field.type === "search" || field.type === "text" ? field.placeholder : undefined
               }
+              hint={field.type === "date" ? "Input format: YYYY-MM-DD" : undefined}
               onChange={(e) => onChange(field.key, e.target.value)}
             />
           );

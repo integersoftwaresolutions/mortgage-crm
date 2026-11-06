@@ -129,10 +129,13 @@ const Step1IdentityUpload: React.FC<Step1Props> = ({
     ) : null;
 
   return (
-    <div className="space-y-5">
-      <p className="text-sm text-card-text">
-        Provide the client&apos;s full legal name by uploading an ID or typing it manually.
-      </p>
+    <div className="space-y-4">
+      <div>
+        <h2 className="text-[20px] font-semibold text-text">Confirm legal name</h2>
+        <p className="mt-1 text-sm text-card-text">
+          Provide the client&apos;s full legal name by uploading an ID or typing it manually.
+        </p>
+      </div>
 
       <div
         className="inline-flex w-full max-w-md rounded-lg border border-card-border bg-background p-1 sm:w-auto"
@@ -152,9 +155,9 @@ const Step1IdentityUpload: React.FC<Step1Props> = ({
             aria-selected={mode === opt.key}
             onClick={() => setMode(opt.key)}
             className={cn(
-              "flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors sm:flex-none",
+              "h-10 flex-1 rounded-md px-4 text-sm font-semibold transition-colors sm:flex-none",
               mode === opt.key
-                ? "bg-card text-text shadow-sm"
+                ? "bg-primary text-primary-text"
                 : "text-card-text hover:text-text"
             )}
           >
@@ -233,7 +236,7 @@ const Step1IdentityUpload: React.FC<Step1Props> = ({
               </div>
             </div>
           ) : (
-            <div className="rounded-xl border border-dashed border-card-border bg-background p-6 text-center space-y-4">
+            <div className="space-y-3 rounded-xl border border-dashed border-card-border bg-background px-4 py-5 text-center">
               <p className="text-sm text-card-text">
                 Upload a passport, driver&apos;s license, national ID, or other government ID. We&apos;ll extract the legal name automatically.
               </p>

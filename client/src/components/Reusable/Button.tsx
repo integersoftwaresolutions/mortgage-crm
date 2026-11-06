@@ -57,17 +57,17 @@ const Button: React.FC<ButtonProps> = ({
   const isLink = variant === "link";
 
   const base = isLink
-    ? "relative inline-flex items-center justify-center gap-2 text-sm font-semibold select-none px-1 py-0 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-shadow focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-    : "relative inline-flex items-center justify-center gap-1.5 text-sm font-medium leading-none select-none px-3 py-1.5 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-shadow focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+    ? "relative inline-flex items-center justify-center gap-2 text-sm font-semibold select-none px-1 py-0 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+    : "relative inline-flex h-10 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-4 text-sm font-semibold leading-none select-none transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
-  const shape = isLink ? "" : rounded === false ? "rounded-xl" : "rounded-full";
+  const shape = isLink ? "" : rounded ? "rounded-full" : "rounded-lg";
 
   const variantCls = isLink
     ? "border-none bg-transparent text-link underline hover:text-link-hover shadow-none"
     : semanticBadgeInteractiveClasses[VARIANT_TONE[variant]];
 
   const state =
-    disabled || isLoading ? "opacity-60 cursor-not-allowed" : "cursor-pointer";
+    disabled || isLoading ? "cursor-not-allowed opacity-40" : "cursor-pointer";
 
   const showDisabledHint = Boolean(disabled && !isLoading && disabledTooltip);
   const button = (

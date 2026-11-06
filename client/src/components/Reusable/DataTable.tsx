@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   HiChevronLeft,
   HiChevronRight,
-  HiChevronDoubleLeft,
-  HiChevronDoubleRight,
   HiOutlineInbox,
   HiOutlineArrowPath,
   HiChevronDown,
@@ -49,7 +47,7 @@ type SortConfig = {
 
 const DEFAULT_COLUMN_WIDTH = 160;
 const SELECT_COLUMN_WIDTH = 56;
-const ACTIONS_COLUMN_WIDTH = 320;
+const ACTIONS_COLUMN_WIDTH = 220;
 const MIN_COLUMN_WIDTH = 48;
 const MAX_COLUMN_WIDTH = 640;
 
@@ -186,6 +184,7 @@ export default function DataTable<T = any>({
   rowSelection,
   sort,
   enableColumnResize = true,
+  emptyMessage,
 }: {
   columns: Column<T>[];
   data: T[];
@@ -199,6 +198,7 @@ export default function DataTable<T = any>({
   rowSelection?: RowSelectionConfig;
   sort?: SortConfig;
   enableColumnResize?: boolean;
+  emptyMessage?: React.ReactNode;
 }) {
   const isPaginated =
     typeof page === "number" &&
@@ -442,122 +442,10 @@ export default function DataTable<T = any>({
 
   return (
     <div className="space-y-3">
-      {/* Toolbar / Pagination */}
-      {isPaginated && (
-        <HoverBorderGradient
-          containerClassName="w-full"
-          roundedClassName="rounded-2xl"
-          className="bg-card border border-card-border shadow-sm"
-        >
-          <div className="relative">
-            <Spotlight className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-            <div className="relative z-10 flex gap-3 px-3 py-3 sm:flex-row sm:items-center justify-between sm:px-4">
-              {/* Left: rows per page */}
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-card-text opacity-80">
-                  Rows
-                </span>
-
-                <div className="relative">
-                  <select
-                    className={cn(
-                      "appearance-none rounded-xl border border-card-border bg-background",
-                      "pl-3 pr-9 py-2 text-xs text-text shadow-sm",
-                      "hover:bg-card-hover transition cursor-pointer",
-                      // tighter on mobile
-                      "h-8 sm:h-auto",
-                      loading ? "opacity-60" : ""
-                    )}
-                    value={pageSize}
-                    onChange={handlePageSizeChange}
-                    disabled={loading}
-                  >
-                    {[5, 10, 25, 50, 100].map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
-
-                  <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-text opacity-70">
-                    <HiChevronDown className="h-4 w-4" />
-                  </span>
-                </div>
-              </div>
-
-              {/* Middle: info */}
-              <div className="flex items-center gap-2 text-sm text-card-text">
-                {loading ? (
-                  <span className="inline-flex items-center gap-2 opacity-80">
-                    <HiOutlineArrowPath className="h-4 w-4 animate-spin" />
-                    Loading…
-                  </span>
-                ) : (
-                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                    <span className="opacity-80">
-                      <span className="font-semibold text-text">{startItem}</span>
-                      {"–"}
-                      <span className="font-semibold text-text">{endItem}</span>
-                      <span className="opacity-80"> of </span>
-                      <span className="font-semibold text-text">{total}</span>
-                    </span>
-
-                    <span className="hidden sm:inline opacity-30">•</span>
-
-                    <span className="opacity-80">
-                      <span className="font-semibold text-text">{safePage}</span>
-                      <span className="opacity-80"> / </span>
-                      <span className="font-semibold text-text">{totalPages}</span>
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {/* Right: icon-only controls */}
-              <div className="flex items-center justify-end gap-1.5 sm:gap-2">
-                {/* Hide double buttons on very small screens */}
-                <div className="hidden xs:flex items-center gap-1.5 sm:gap-2">
-                  <IconPageButton onClick={() => goTo(1)} disabled={!canPrev} title="First page">
-                    <HiChevronDoubleLeft className="h-4 w-4 sm:h-5 sm:w-5" />
-                  </IconPageButton>
-                </div>
-
-                <IconPageButton
-                  onClick={() => goTo(safePage - 1)}
-                  disabled={!canPrev}
-                  title="Previous page"
-                >
-                  <HiChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
-                </IconPageButton>
-
-                <IconPageButton
-                  onClick={() => goTo(safePage + 1)}
-                  disabled={!canNext}
-                  title="Next page"
-                >
-                  <HiChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
-                </IconPageButton>
-
-                <div className="hidden xs:flex items-center gap-1.5 sm:gap-2">
-                  <IconPageButton
-                    onClick={() => goTo(totalPages)}
-                    disabled={!canNext}
-                    title="Last page"
-                  >
-                    <HiChevronDoubleRight className="h-4 w-4 sm:h-5 sm:w-5" />
-                  </IconPageButton>
-                </div>
-              </div>
-            </div>
-          </div>
-        </HoverBorderGradient>
-      )}
-
       {/* Table */}
       <HoverBorderGradient
         containerClassName="w-full min-w-0"
-        roundedClassName="rounded-2xl"
+        roundedClassName="rounded-xl"
         className="bg-card border border-card-border shadow-sm"
       >
         <div className="relative min-w-0">
@@ -595,6 +483,7 @@ export default function DataTable<T = any>({
                             : "px-3 py-2 text-left sm:px-4 sm:py-3 overflow-hidden",
                           "text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-card-text",
                           "whitespace-nowrap",
+                          isActionsColumn(col, colId) && "text-right",
                           columnDividerClass(i, displayColumns.length),
                           col.thClassName || "",
                         )}
@@ -659,7 +548,7 @@ export default function DataTable<T = any>({
                           No results found
                         </div>
                         <div className="text-xs text-card-text opacity-80">
-                          Try adjusting filters, search, or pagination.
+                          {emptyMessage || "Try adjusting filters or search."}
                         </div>
                       </div>
                     </td>
@@ -695,13 +584,17 @@ export default function DataTable<T = any>({
                                 ? "px-2 text-center"
                                 : "px-3 sm:px-4",
                               actionsCol || selectCol
-                                ? "whitespace-nowrap"
-                                : "whitespace-nowrap overflow-hidden text-ellipsis",
+                                ? "overflow-hidden whitespace-nowrap"
+                                : "overflow-hidden whitespace-nowrap text-ellipsis",
                               col.className || "",
                             )}
                           >
-                            {actionsCol || selectCol ? (
+                            {selectCol ? (
                               cellContent
+                            ) : actionsCol ? (
+                              <div className="flex w-full min-w-0 items-center justify-end gap-2">
+                                {cellContent}
+                              </div>
                             ) : (
                               <div className="truncate">{cellContent}</div>
                             )}
@@ -713,6 +606,57 @@ export default function DataTable<T = any>({
               </tbody>
             </table>
           </div>
+          {isPaginated ? (
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-card-border px-4 py-2">
+              <div className="text-sm text-card-text">
+                {loading ? (
+                  <span className="inline-flex items-center gap-2">
+                    <HiOutlineArrowPath className="h-4 w-4 animate-spin" />
+                    Loading…
+                  </span>
+                ) : (
+                  <span>
+                    <span className="font-semibold text-text">{startItem}</span>
+                    –
+                    <span className="font-semibold text-text">{endItem}</span>
+                    <span> of </span>
+                    <span className="font-semibold text-text">{total}</span>
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <label className="text-xs text-card-text" htmlFor="table-page-size">
+                  Rows
+                </label>
+                <select
+                  id="table-page-size"
+                  className="h-8 rounded-lg border border-card-border bg-background px-2 text-xs text-text"
+                  value={pageSize}
+                  onChange={handlePageSizeChange}
+                  disabled={loading}
+                >
+                  {[5, 10, 25, 50, 100].map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+                {totalPages > 1 ? (
+                  <div className="flex items-center gap-1">
+                    <IconPageButton onClick={() => goTo(safePage - 1)} disabled={!canPrev} title="Previous page">
+                      <HiChevronLeft className="h-4 w-4" />
+                    </IconPageButton>
+                    <span className="px-1 text-xs text-card-text">
+                      {safePage} / {totalPages}
+                    </span>
+                    <IconPageButton onClick={() => goTo(safePage + 1)} disabled={!canNext} title="Next page">
+                      <HiChevronRight className="h-4 w-4" />
+                    </IconPageButton>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
         </div>
       </HoverBorderGradient>
     </div>

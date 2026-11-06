@@ -126,12 +126,15 @@ export default function OrganizationWorkspacesSettings() {
         ),
       },
       {
-        title: "",
+        title: "Actions",
         dataIndex: "workspaceId",
+        key: "actions",
+        width: 220,
+        minWidth: 220,
         render: (_: unknown, row: WorkspaceRow) => (
-          <Button variant="secondary" onClick={() => handleOpenWorkspace(row.workspaceId)}>
+          <Button variant="primary" onClick={() => handleOpenWorkspace(row.workspaceId)}>
             <span className="inline-flex items-center gap-2">
-              Open <FiExternalLink className="h-4 w-4" />
+              Open workspace <FiExternalLink className="h-4 w-4" />
             </span>
           </Button>
         ),
@@ -157,7 +160,7 @@ export default function OrganizationWorkspacesSettings() {
         }
       />
 
-      <div className="rounded-2xl border border-card-border bg-card p-4">
+      <div className="max-w-sm">
         <Input
           name="searchWorkspaces"
           label="Search workspaces"

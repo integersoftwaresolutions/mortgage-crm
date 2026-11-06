@@ -95,18 +95,17 @@ const LineTrendChart: React.FC<LineTrendChartProps> = ({
     );
   }
 
-  if (!chartData.length) {
+  if (!chartData.length || !hasActivity) {
     return (
       <div
         className={cn(
           "w-full min-w-0 flex flex-col items-center justify-center gap-1",
-          "bg-card border border-card-border rounded-2xl",
+          "rounded-xl border border-dashed border-card-border bg-background",
           className
         )}
         style={chartPlaceholderStyle()}
       >
-        <div className="text-text font-medium">No data yet</div>
-        <div className="text-card-text text-sm">Cases will appear here once processed</div>
+        <div className="text-sm font-medium text-text">No activity in this period</div>
       </div>
     );
   }

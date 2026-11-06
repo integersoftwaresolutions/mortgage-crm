@@ -13,6 +13,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   hint?: string;
   hintTone?: "success" | "muted";
   disabled?: boolean;
+  readOnly?: boolean;
   fieldSize?: "sm" | "md" | "lg";
   className?: string;
 }
@@ -29,6 +30,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       hint,
       hintTone = "muted",
       disabled = false,
+      readOnly = false,
       fieldSize = "md",
       className,
       ...rest
@@ -46,15 +48,17 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         : "px-3 py-2 text-sm";
 
     const base =
-      "w-full rounded-xl border bg-card border-card-border " +
-      "text-text shadow-sm " +
-      "focus:outline-none focus:ring-2 focus:ring-primary-shadow focus:border-primary-border " +
+      "h-10 w-full rounded-lg border bg-card border-card-border " +
+      "text-[15px] text-text shadow-sm " +
+      "focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary " +
       "transition-all duration-200";
 
     const state = error
-      ? "border-danger-border text-danger-text focus:ring-danger-shadow focus:border-danger-border"
+      ? "border-danger-border text-danger-text focus:ring-danger focus:border-danger"
       : disabled
-      ? "cursor-not-allowed opacity-60"
+      ? "cursor-not-allowed bg-card-muted opacity-50"
+      : readOnly
+      ? "cursor-default bg-card-muted"
       : "hover:bg-card-hover";
 
     return (
@@ -73,6 +77,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             placeholder={placeholder}
             onChange={onChange}
             disabled={disabled}
+            readOnly={readOnly}
             className={cn(base, sizeCls, state, isPassword ? "pr-10" : "", className)}
             {...rest}
           />

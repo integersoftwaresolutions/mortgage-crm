@@ -156,16 +156,15 @@ const Profile = () => {
   const passwordSections: FormSection[] = [{ title: "Change Password", fields: passwordFields }];
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-8 space-y-6">
+    <div className="mx-auto w-full max-w-6xl space-y-6">
       <PageHeader
         title={"Profile"}
         description={"Manage your profile information and settings"}
       />
 
-      <div className="grid gap-6 lg:grid-cols-12">
-        {/* Left Column: Profile Picture Card */}
-        <div className="lg:col-span-4">
-          <Surface variant="card" className="p-8">
+      <div className="grid items-start gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
+        <div>
+          <Surface variant="card" className="p-6">
             <div className="flex flex-col items-center gap-6">
               {/* Profile Picture Section */}
               <div className="relative group">
@@ -173,7 +172,7 @@ const Profile = () => {
                   className="relative cursor-pointer"
                   onClick={() => !uploadingPicture && fileUploadRef.current?.open()}
                 >
-                  <div className="relative h-32 w-32 rounded-full overflow-hidden ring-4 ring-background shadow-lg">
+                  <div className="relative h-20 w-20 overflow-hidden rounded-full ring-4 ring-background shadow-lg">
                     {userInfo && (() => {
                       const displayName = getUserDisplayName(userInfo);
 
@@ -185,7 +184,7 @@ const Profile = () => {
                           onError={() => setProfileImageFailed(true)}
                         />
                       ) : (
-                        <div className="h-full w-full flex items-center justify-center text-4xl font-bold text-background bg-text rounded-full">
+                        <div className="flex h-full w-full items-center justify-center rounded-full bg-primary text-2xl font-semibold text-primary-text">
                           <span className="select-none">{avatarSource.value}</span>
                         </div>
                       );
@@ -243,7 +242,7 @@ const Profile = () => {
         </div>
 
         {/* Right Column: Profile Information & Security */}
-        <div className="lg:col-span-8 space-y-6">
+        <div className="space-y-6">
           {/* Profile Information Form */}
           <Surface variant="card" className="p-6">
             <div className="mb-6">
@@ -251,45 +250,43 @@ const Profile = () => {
               <p className="text-sm text-card-text mt-1">Update your personal details and preferences</p>
             </div>
             <form onSubmit={handleProfileSubmit} className="space-y-4">
-              <Input
-                name="fullName"
-                label="Full Name"
-                placeholder="Full Name"
-                type="text"
-                required
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-              />
-              <Input
-                name="username"
-                label="Username"
-                placeholder="Username"
-                type="text"
-                required
-                value={username}
-                onChange={(e) => handleUsernameChange(e.target.value)}
-                error={usernameError}
-                hint={usernameHint}
-                hintTone={usernameHintTone}
-              />
-              <Input
-                name="email"
-                label="Email"
-                placeholder="Email"
-                type="email"
-                required
-                value={user?.email || ""}
-                disabled
-              />
-              <Input
-                name="role"
-                label="Role"
-                placeholder="Role"
-                type="text"
-                required
-                value={user?.role || ""}
-                disabled
-              />
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Input
+                  name="fullName"
+                  label="Full name"
+                  type="text"
+                  required
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                />
+                <Input
+                  name="username"
+                  label="Username"
+                  type="text"
+                  required
+                  value={username}
+                  onChange={(e) => handleUsernameChange(e.target.value)}
+                  error={usernameError}
+                  hint={usernameHint}
+                  hintTone={usernameHintTone}
+                />
+                <Input
+                  name="email"
+                  label="Email"
+                  type="email"
+                  value={user?.email || ""}
+                  readOnly
+                  hint="Read only"
+                />
+                <Input
+                  name="role"
+                  label="Role"
+                  type="text"
+                  value={user?.role || ""}
+                  readOnly
+                  hint="Read only"
+                />
+              </div>
               <Button
                 type="submit"
                 variant="primary"

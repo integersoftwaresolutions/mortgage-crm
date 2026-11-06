@@ -206,14 +206,15 @@ export default function LeadsPage() {
 
   const columns = useMemo(
     () => [
-      { title: "Full Name", dataIndex: "fullName", sortable: true },
-      { title: "Email", dataIndex: "email", render: (v: string) => v || "-" },
-      { title: "Phone", dataIndex: "phone", render: (v: string) => v || "-" },
-      { title: "Company", dataIndex: "company", render: (v: string) => v || "-" },
-      { title: "Source", dataIndex: "source", render: (v: string) => v || "-" },
+      { title: "Full Name", dataIndex: "fullName", sortable: true, width: 180 },
+      { title: "Email", dataIndex: "email", width: 180, render: (v: string) => v || "-" },
+      { title: "Phone", dataIndex: "phone", width: 130, render: (v: string) => v || "-" },
+      { title: "Company", dataIndex: "company", width: 140, render: (v: string) => v || "-" },
+      { title: "Source", dataIndex: "source", width: 110, render: (v: string) => v || "-" },
       {
         title: "Used As Client",
         dataIndex: "usedAsClient",
+        width: 130,
         render: (_: unknown, row: Lead) =>
           row.usedAsClient ? (
             <StatusBadge tone="success">
@@ -229,13 +230,16 @@ export default function LeadsPage() {
         title: "Created At",
         dataIndex: "createdAt",
         sortable: true,
+        width: 130,
         render: (v: string) => <span className="text-sm text-card-text">{v ? prettyDate(v) : "-"}</span>,
       },
       {
         title: "Actions",
         dataIndex: "actions",
+        width: 340,
+        minWidth: 340,
         render: (_: unknown, row: Lead) => (
-          <div className="flex gap-2">
+          <div className="flex justify-end gap-2">
             <IconButton
               icon={FiEdit2 as never}
               size="sm"
@@ -282,7 +286,7 @@ export default function LeadsPage() {
   );
 
   return (
-    <div className="mx-auto space-y-6 p-2 md:p-6">
+    <div className="mx-auto space-y-6">
       <PageHeader
         title="Leads"
         description="Manage your leads and import them from spreadsheets."
@@ -358,6 +362,11 @@ export default function LeadsPage() {
         total={list.total}
         onPageChange={list.setPage}
         onPageSizeChange={list.setPageSize}
+        emptyMessage={
+          Object.values(filterValues).some((value) => String(value).trim())
+            ? "No leads match these filters."
+            : "No leads yet — add a lead or import a spreadsheet."
+        }
         rowKey={(row) => row._id}
         rowSelection={{
           selectedKeys: selection.selectedKeys,

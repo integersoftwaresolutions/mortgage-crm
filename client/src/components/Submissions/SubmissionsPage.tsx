@@ -5,7 +5,7 @@ import DataTable from "../Reusable/DataTable";
 import Input from "../Reusable/Inputs/Input";
 import Modal from "../Reusable/Modal";
 import { prettyDate } from "../../utils/date";
-import { FiEdit2, FiMessageCircle, FiPlus } from "react-icons/fi";
+import { FiEdit2, FiPlus } from "react-icons/fi";
 import { useNavigate } from "react-router";
 import { Submission } from "../../types/extraction.types";
 import PageHeader from "../Reusable/PageHeader";
@@ -217,6 +217,7 @@ const SubmissionsPage: React.FC = () => {
         title: "Documents",
         dataIndex: "documents",
         key: "documents",
+        width: 110,
         render: (_: any, row: Submission) =>
           Array.isArray(row.documents) ? row.documents.length : 0,
       },
@@ -224,44 +225,43 @@ const SubmissionsPage: React.FC = () => {
         title: "Created",
         dataIndex: "createdAt",
         key: "createdAt",
+        width: 140,
         render: (value: any) => (value ? prettyDate(value) : "-"),
       },
       {
         title: "Actions",
         dataIndex: "",
         key: "actions",
+        width: 400,
+        minWidth: 400,
         render: (_: any, row: Submission) => (
-          <div className="inline-flex items-center gap-2">
-            <Button
-              variant="secondary"
-              onClick={() => openEdit(row)}
-              disabled={!canEditClient}
-              disabledTooltip={!canEditClient ? PERMISSION_TOOLTIPS.editClient : undefined}
-            >
-              <span className="inline-flex items-center gap-2">
-                <FiEdit2 className="h-4 w-4 shrink-0" aria-hidden />
-                Edit
-              </span>
-            </Button>
+          <div className="inline-flex items-center justify-end gap-2">
             <Button
               variant="primary"
-              onClick={() => navigate(`${row._id}/assistant`)}
-              disabled={!canOpenClientDetail}
-              disabledTooltip={!canOpenClientDetail ? PERMISSION_TOOLTIPS.manageClient : undefined}
-            >
-              <span className="inline-flex items-center gap-2">
-                <FiMessageCircle className="h-4 w-4 shrink-0" aria-hidden />
-                Ask assistant
-              </span>
-            </Button>
-            <Button
-              variant="secondary"
               onClick={() => navigate(`${row._id}`)}
               disabled={!canOpenClientDetail}
               disabledTooltip={!canOpenClientDetail ? PERMISSION_TOOLTIPS.manageClient : undefined}
             >
-              Manage
+              Continue workflow
             </Button>
+            <Button
+              variant="secondary"
+              onClick={() => navigate(`${row._id}/assistant`)}
+              disabled={!canOpenClientDetail}
+              disabledTooltip={!canOpenClientDetail ? PERMISSION_TOOLTIPS.manageClient : undefined}
+            >
+              Ask assistant
+            </Button>
+            <button
+              type="button"
+              title="Edit client"
+              aria-label="Edit client"
+              onClick={() => openEdit(row)}
+              disabled={!canEditClient}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-card-border text-card-text hover:bg-card-hover hover:text-text disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <FiEdit2 className="h-4 w-4" aria-hidden />
+            </button>
           </div>
         ),
       },
@@ -270,7 +270,7 @@ const SubmissionsPage: React.FC = () => {
   );
 
   return (
-    <div className="space-y-4 p-2 md:p-6">
+    <div className="space-y-6">
       <PageHeader
         title="Clients"
         description="Manage clients and continue extraction/document workflows."

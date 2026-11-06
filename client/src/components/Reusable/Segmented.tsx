@@ -13,12 +13,37 @@ export default function Segmented<T extends string>({
   onChange,
   options,
   className,
+  variant = "cards",
 }: {
   value: T;
   onChange: (v: T) => void;
   options: SegmentedOption<T>[];
   className?: string;
+  variant?: "cards" | "tabs";
 }) {
+  if (variant === "tabs") {
+    return (
+      <div className={cn("inline-flex rounded-lg border border-card-border bg-card p-1", className)}>
+        {options.map((opt) => {
+          const active = opt.key === value;
+          return (
+            <button
+              key={opt.key}
+              type="button"
+              onClick={() => onChange(opt.key)}
+              className={cn(
+                "h-10 rounded-md px-4 text-sm font-semibold",
+                active ? "bg-primary text-primary-text" : "text-card-text hover:text-text"
+              )}
+            >
+              {opt.label}
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+
   return (
     <div className={cn("grid grid-cols-1 gap-2 sm:gap-3 sm:grid-cols-2", className)}>
       {options.map((opt) => {

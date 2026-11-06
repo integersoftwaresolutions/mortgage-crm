@@ -38,26 +38,16 @@ type MetricCardProps = {
 
 function DashboardMetricCard({ title, subtitle, loading, value }: MetricCardProps) {
   return (
-    <Card containerClassName="h-full" className="h-full">
-      <div className="flex h-full min-h-[120px] flex-col p-3 sm:p-4">
-        <div className="mb-2 min-w-0">
-          <div className="text-xs font-medium text-text-secondary sm:text-sm">{title}</div>
-          {subtitle ? (
-            <div className="mt-0.5 line-clamp-2 min-h-[28px] text-[10px] text-card-text sm:text-xs">
-              {subtitle}
-            </div>
-          ) : (
-            <div className="mt-0.5 min-h-[28px]" />
-          )}
-        </div>
-        <div className="mt-auto">
-          {loading ? (
-            <div className="h-7 w-20 animate-pulse rounded bg-card-border sm:h-8" />
-          ) : (
-            <div className="truncate text-2xl font-bold text-text sm:text-3xl">{value}</div>
-          )}
-        </div>
+    <Card containerClassName="h-full" className="!flex h-[120px] flex-col justify-between !p-4">
+      <div className="min-w-0">
+        <div className="truncate text-sm font-medium text-card-text">{title}</div>
+        <div className="mt-0.5 line-clamp-1 min-h-[18px] text-xs text-card-text">{subtitle || "\u00a0"}</div>
       </div>
+      {loading ? (
+        <div className="h-7 w-16 animate-pulse rounded bg-card-border" />
+      ) : (
+        <div className="truncate text-2xl font-semibold text-text">{value}</div>
+      )}
     </Card>
   );
 }
@@ -79,10 +69,10 @@ function DashboardChartCard({
 }: ChartCardProps) {
   return (
     <Card>
-      <div className="p-3 sm:p-4">
-        <div className="mb-3 flex flex-col gap-2 sm:mb-4 sm:flex-row sm:items-start sm:justify-between">
+      <div>
+        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h3 className="text-base font-semibold text-text sm:text-lg">{title}</h3>
+            <h3 className="text-[20px] font-semibold text-text">{title}</h3>
             {subtitle ? <p className="mt-0.5 text-xs text-card-text sm:text-sm">{subtitle}</p> : null}
           </div>
           <CardRangeToggle value={range} onChange={onRangeChange} />
@@ -236,19 +226,31 @@ const DashboardAnalytics: React.FC = () => {
   const completedCount = summary.data?.completedCasesCount ?? 0;
 
   return (
-    <div className="space-y-4 p-3 sm:space-y-5 sm:p-4 md:space-y-6 md:p-6">
+    <div className="space-y-6">
       <PageHeader
         title="Dashboard Analytics"
         description="View analytics and metrics for submissions and processing"
       />
 
       {/* KPI cards — overall (all-time) totals */}
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-5">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <DashboardMetricCard
+          title="Pending Reviews"
+          subtitle="Awaiting review"
+          loading={summary.loading}
+          value={summary.data?.pendingReviewsCount ?? 0}
+        />
         <DashboardMetricCard
           title="Cases Processed"
           subtitle="In review or completed"
           loading={summary.loading}
           value={summary.data?.casesProcessedCount ?? 0}
+        />
+        <DashboardMetricCard
+          title="Completed"
+          subtitle="Fully completed cases"
+          loading={summary.loading}
+          value={summary.data?.completedCasesCount ?? 0}
         />
         <DashboardMetricCard
           title="Typical Processing Time"
@@ -267,18 +269,6 @@ const DashboardAnalytics: React.FC = () => {
           value={
             summary.data ? `${summary.data.manualEditsRatePercent.toFixed(1)}%` : "0%"
           }
-        />
-        <DashboardMetricCard
-          title="Pending Reviews"
-          subtitle="Awaiting review"
-          loading={summary.loading}
-          value={summary.data?.pendingReviewsCount ?? 0}
-        />
-        <DashboardMetricCard
-          title="Completed"
-          subtitle="Fully completed cases"
-          loading={summary.loading}
-          value={summary.data?.completedCasesCount ?? 0}
         />
       </div>
 

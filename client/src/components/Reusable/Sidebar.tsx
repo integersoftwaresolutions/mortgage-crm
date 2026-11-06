@@ -24,6 +24,7 @@ interface SidebarProps {
   links?: SidebarLink[];
   brandTitle?: string;
   brandSubtitle?: string;
+  sectionLabel?: string;
 }
 
 /* -------------------- Nav item -------------------- */
@@ -48,7 +49,7 @@ const NavItem: React.FC<NavItemProps> = ({
           "transition-colors duration-150 outline-none",
           collapsed ? "justify-center px-1" : "",
           isActive
-            ? "bg-primary-muted text-text"
+            ? "bg-primary text-primary-text"
             : "text-card-text hover:bg-card-hover hover:text-text"
         )
       }
@@ -64,13 +65,18 @@ const NavItem: React.FC<NavItemProps> = ({
 
 /* -------------------- Sidebar -------------------- */
 
-const Sidebar: React.FC<SidebarProps> = ({ links = [] }) => {
+const Sidebar: React.FC<SidebarProps> = ({ links = [], sectionLabel }) => {
   const groupedLinks = useMemo(() => links, [links]);
 
   return (
-    <CollapsibleSidebar mobileTitle="Navigation">
+    <CollapsibleSidebar>
       {({ collapsed, closeMobile }) => (
         <nav className="space-y-0.5">
+          {sectionLabel && !collapsed ? (
+            <p className="mb-2 truncate px-2 text-[11px] font-semibold uppercase tracking-wide text-card-text">
+              {sectionLabel}
+            </p>
+          ) : null}
           {groupedLinks.map((link) => (
             <NavItem
               key={link.to}

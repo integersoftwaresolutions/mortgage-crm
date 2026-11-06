@@ -108,7 +108,7 @@ function FieldButton({
           "hover:bg-card-hover focus:outline-none focus:ring-2 focus:ring-primary-shadow",
         )}
       >
-        <span className="min-w-0 flex-1 whitespace-normal break-words text-sm font-medium leading-snug text-text">
+        <span className="line-clamp-2 min-w-0 flex-1 text-sm font-medium leading-snug text-text" title={label}>
           {label}
         </span>
         <RequiredPill required={field.required} />
@@ -183,7 +183,7 @@ export default function MasterFieldsPanel({
     <CollapsibleSidebar
       className={className}
       mobileTitle={`Master Fields (${fieldCountLabel})`}
-      expandedWidthClass="w-[260px]"
+      expandedWidthClass="w-[280px]"
       collapsedWidthClass="w-[64px]"
       desktopHeader={
         <div className="flex items-center justify-between gap-2">

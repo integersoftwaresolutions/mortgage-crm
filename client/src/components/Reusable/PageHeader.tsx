@@ -71,8 +71,8 @@ export default function PageHeader({
         {back ? <PageHeaderBackLink back={back} /> : null}
         <h1
           className={cn(
-            "font-extrabold tracking-tight text-text",
-            isSection ? "text-lg leading-snug" : "text-xl leading-tight sm:text-2xl",
+            "font-semibold tracking-tight text-text",
+            isSection ? "text-[20px] leading-snug" : "text-[28px] leading-tight",
           )}
         >
           {title}
@@ -81,7 +81,7 @@ export default function PageHeader({
           <div
             className={cn(
               "mt-0.5 break-words text-card-text",
-              isSection ? "text-xs leading-relaxed" : "max-w-3xl text-sm leading-snug",
+              isSection ? "text-sm leading-relaxed" : "max-w-3xl text-[15px] leading-snug",
             )}
           >
             {description}

@@ -56,7 +56,7 @@ export default function PlanCard({
               </span>
             ) : null}
           </div>
-          <p className="mt-1 text-sm text-card-text">{description || "No description provided."}</p>
+          {description ? <p className="mt-1 text-sm text-card-text">{description}</p> : null}
           {pricing ? (
             <div className="mt-2">
               <div className="text-2xl font-bold text-text">

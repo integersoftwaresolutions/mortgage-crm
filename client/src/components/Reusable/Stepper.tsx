@@ -34,23 +34,22 @@ const Stepper: React.FC<StepperProps> = ({
             onClick={() => !isLocked && onStepChange(s.step)}
             disabled={isLocked}
             className={cn(
-              "group flex w-full min-w-0 items-center gap-2 rounded-xl border px-3 py-2 text-left transition-colors sm:w-auto",
-              "bg-card shadow-sm",
+              "group flex h-10 w-full min-w-0 items-center gap-2 rounded-lg border px-3 text-left transition-colors sm:w-auto",
               isActive
-                ? "border-primary"
+                ? "border-primary bg-primary text-primary-text"
                 : isLocked
-                  ? "cursor-not-allowed border-card-border opacity-60"
-                  : "border-card-border hover:bg-card-hover"
+                  ? "cursor-not-allowed border-card-border bg-card opacity-50"
+                  : "border-card-border bg-card hover:bg-card-hover"
             )}
             aria-current={isActive ? "step" : undefined}
             aria-disabled={isLocked}
           >
             <div
               className={cn(
-                "flex h-7 w-7 items-center justify-center rounded-full border text-xs font-semibold",
+                "flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold",
                 isActive
-                  ? "border-primary-border bg-primary text-primary-text"
-                  : "border-card-border bg-background text-text"
+                  ? "bg-background text-text"
+                  : "bg-background text-text"
               )}
             >
               {s.step}
@@ -59,8 +58,8 @@ const Stepper: React.FC<StepperProps> = ({
             <div className="min-w-0">
               <div
                 className={cn(
-                  "text-xs font-medium",
-                  isActive ? "text-text" : "text-card-text"
+                  "text-sm font-medium",
+                  isActive ? "text-primary-text" : "text-card-text"
                 )}
               >
                 {s.label}

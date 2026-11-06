@@ -245,7 +245,7 @@ export default function Step4GenerateDocument({
                     className={[
                       "w-full rounded-2xl border p-3 text-left transition-colors",
                       isActive
-                        ? "border-primary-border bg-primary-muted"
+                        ? "border-2 border-primary bg-primary-muted"
                         : "border-card-border bg-card hover:bg-card-hover",
                     ].join(" ")}
                   >
@@ -305,20 +305,22 @@ export default function Step4GenerateDocument({
                     />
                   </div>
 
-                  {coverage.missing > 0 && (
-                    <div className="mt-2 text-xs text-card-text">
-                      Missing fields will render as blank.
-                    </div>
-                  )}
                 </div>
+
+                {coverage.missing > 0 && (
+                  <div className="rounded-lg border border-warning-border bg-warning-muted px-3 py-2 text-sm text-warning-text">
+                    {coverage.missing} missing field{coverage.missing === 1 ? "" : "s"} will be left blank on the PDF.
+                  </div>
+                )}
 
                 <Button
                   variant="primary"
                   onClick={generate}
                   isLoading={generating}
                   disabled={!selectedId || generating}
+                  className="w-full"
                 >
-                  Generate Filled PDF
+                  Generate PDF
                 </Button>
 
                 {generatedUrl && (

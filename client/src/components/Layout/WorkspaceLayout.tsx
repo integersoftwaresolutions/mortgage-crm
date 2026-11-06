@@ -10,7 +10,7 @@ import { GrDashboard } from "react-icons/gr";
 import { useEffect, useMemo } from "react";
 
 export default function WorkspaceLayout() {
-  const { activeWorkspaceId, setActiveWorkspaceId, setActiveOrganizationId } = useAuth();
+  const { activeWorkspaceId, setActiveWorkspaceId, setActiveOrganizationId, workspaces } = useAuth();
   const perm = usePermissionsOptional();
   const location = useLocation();
   const { organizationId, workspaceId: workspaceIdParam } = useParams();
@@ -65,11 +65,19 @@ export default function WorkspaceLayout() {
       <Navbar />
       <div className="pt-14">
         <div className="flex w-full">
-          {!isOnboarding && !isTemplateDesigner && <Sidebar links={links} />}
+          {!isOnboarding && !isTemplateDesigner && (
+            <Sidebar
+              links={links}
+              sectionLabel={
+                workspaces.find((workspace) => workspace.workspaceId === workspaceId)?.name ||
+                "Workspace"
+              }
+            />
+          )}
           {isTemplateDesigner ? (
             <Outlet key={location.pathname} />
           ) : (
-            <main className="min-w-0 flex-1 overflow-x-hidden px-4 py-4">
+            <main className="min-w-0 flex-1 overflow-x-hidden px-8 py-8">
               <Outlet key={location.pathname} />
             </main>
           )}

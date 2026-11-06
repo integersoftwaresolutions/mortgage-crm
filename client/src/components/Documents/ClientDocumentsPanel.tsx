@@ -179,15 +179,17 @@ const ClientDocumentsPanel: React.FC<ClientDocumentsPanelProps> = ({
         description={description}
         back={onBack ? { label: "Back", onClick: onBack } : undefined}
         actions={
-          <Button variant="primary" type="button" onClick={() => setAddOpen(true)}>
-            <span className="inline-flex items-center gap-2">
-              <FiPlus /> Upload documents
-            </span>
-          </Button>
+          sortedDocs.length > 0 ? (
+            <Button variant="primary" type="button" onClick={() => setAddOpen(true)}>
+              <span className="inline-flex items-center gap-2">
+                <FiPlus /> Upload documents
+              </span>
+            </Button>
+          ) : null
         }
       />
 
-      <Surface variant="soft" className="min-w-0 overflow-hidden p-4 sm:p-5">
+      <div className="min-w-0">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="text-lg font-extrabold text-text">All files</h2>
@@ -213,16 +215,15 @@ const ClientDocumentsPanel: React.FC<ClientDocumentsPanelProps> = ({
             ))}
           </div>
         ) : sortedDocs.length === 0 ? (
-          <div className="mt-6 rounded-2xl border border-dashed border-card-border bg-card-muted px-6 py-12 text-center">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-muted text-primary">
-              <FiFileText className="h-7 w-7" />
+          <div className="mt-4 flex h-[220px] flex-col items-center justify-center rounded-xl border border-dashed border-card-border bg-background px-6 text-center">
+            <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-lg bg-primary-muted text-primary">
+              <FiFileText className="h-5 w-5" />
             </div>
-            <p className="mt-4 text-base font-semibold text-text">No documents yet</p>
+            <p className="mt-3 text-sm font-semibold text-text">No documents yet</p>
             <p className="mx-auto mt-1 max-w-md text-sm text-card-text">
-              Upload PDFs, Word files, or images. Each file is stored with its prepared text before you
-              extract fields.
+              Upload PDFs, Word files, or images. Extract fields when you are ready.
             </p>
-            <Button variant="primary" type="button" className="mt-5" onClick={() => setAddOpen(true)}>
+            <Button variant="primary" type="button" className="mt-3" onClick={() => setAddOpen(true)}>
               <span className="inline-flex items-center gap-2">
                 <FiPlus /> Upload documents
               </span>
@@ -250,7 +251,7 @@ const ClientDocumentsPanel: React.FC<ClientDocumentsPanelProps> = ({
             })}
           </div>
         )}
-      </Surface>
+      </div>
 
       <Modal isOpen={addOpen} onClose={closeAdd}>
         <div className="space-y-4">

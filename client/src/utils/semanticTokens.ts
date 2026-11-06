@@ -48,7 +48,7 @@ export const semanticBadgeClasses: Record<SemanticTone, string> = semanticMutedC
 /** Interactive pill badge surface (Button, IconButton). */
 export const semanticBadgeInteractiveClasses: Record<SemanticTone, string> = {
   neutral: `${semanticMutedClasses.neutral} ${semanticMutedHoverClasses.neutral}`,
-  primary: `${semanticMutedClasses.primary} ${semanticMutedHoverClasses.primary}`,
+  primary: semanticSolidClasses.primary,
   secondary: `${semanticMutedClasses.secondary} ${semanticMutedHoverClasses.secondary}`,
   accent: `${semanticMutedClasses.accent} ${semanticMutedHoverClasses.accent}`,
   success: `${semanticMutedClasses.success} ${semanticMutedHoverClasses.success}`,

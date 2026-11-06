@@ -306,47 +306,22 @@ export default function MasterFieldsPanel({
         {/* Controls row */}
         <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between pt-3 border-t border-card-border">          
 
-          <div className="flex flex-wrap gap-1.5">
-            <FilterPill
-              active={filter === "extracted"}
-              label={`Extracted (${counts.extracted})`}
-              onClick={() => setFilter("extracted")}
-            />
-            <FilterPill
-              active={filter === "done"}
-              label={`Completed`}
-              onClick={() => setFilter("done")}
-            />
-            <FilterPill
-              active={filter === "focus"}
-              label={`Focus (${counts.focus})`}
-              onClick={() => setFilter("focus")}
-            />
-            <FilterPill
-              active={filter === "req_missing"}
-              label={`Req Missing (${counts.reqMissing})`}
-              onClick={() => setFilter("req_missing")}
-            />
-            <FilterPill
-              active={filter === "req_review"}
-              label={`Req Review (${counts.reqReview})`}
-              onClick={() => setFilter("req_review")}
-            />
-            <FilterPill
-              active={filter === "opt_missing"}
-              label={`Opt Missing (${counts.optMissing})`}
-              onClick={() => setFilter("opt_missing")}
-            />
-            <FilterPill
-              active={filter === "opt_review"}
-              label={`Opt Review (${counts.optReview})`}
-              onClick={() => setFilter("opt_review")}
-            />
-            <FilterPill
-              active={filter === "all"}
-              label="All"
-              onClick={() => setFilter("all")}
-            />
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="mr-1 text-xs font-semibold text-card-text">Show</span>
+              <FilterPill active={filter === "extracted"} label={`Extracted (${counts.extracted})`} onClick={() => setFilter("extracted")} />
+              <FilterPill active={filter === "done"} label="Completed" onClick={() => setFilter("done")} />
+              <FilterPill active={filter === "focus"} label={`Focus (${counts.focus})`} onClick={() => setFilter("focus")} />
+              <FilterPill active={filter === "all"} label="All" onClick={() => setFilter("all")} />
+            </div>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="mr-1 text-xs font-semibold text-card-text">Required</span>
+              <FilterPill active={filter === "req_missing"} label={`Missing (${counts.reqMissing})`} onClick={() => setFilter("req_missing")} />
+              <FilterPill active={filter === "req_review"} label={`Needs review (${counts.reqReview})`} onClick={() => setFilter("req_review")} />
+              <span className="ml-2 mr-1 text-xs font-semibold text-card-text">Optional</span>
+              <FilterPill active={filter === "opt_missing"} label={`Missing (${counts.optMissing})`} onClick={() => setFilter("opt_missing")} />
+              <FilterPill active={filter === "opt_review"} label={`Needs review (${counts.optReview})`} onClick={() => setFilter("opt_review")} />
+            </div>
           </div>
         </div>
       </Surface>

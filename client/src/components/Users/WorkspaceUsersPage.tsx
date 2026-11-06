@@ -114,11 +114,11 @@ export default function WorkspaceUsersPage() {
     <div className="space-y-5">
       <PageHeader
         title="Workspace Members"
-        description="View who has access to this workspace and their workspace role. Add, edit, or remove users from Organization Settings → Users."
+        description="People who can open this workspace. Managing members opens Organization Settings."
         actions={
           canManageMembers && orgUsersPath ? (
             <Link to={orgUsersPath}>
-              <Button variant="primary">Manage in Organization Settings</Button>
+              <Button variant="primary">Manage members</Button>
             </Link>
           ) : null
         }

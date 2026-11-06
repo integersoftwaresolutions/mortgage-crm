@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
-  FiCheckCircle,
   FiCopy,
   FiDownload,
   FiEdit2,
@@ -9,7 +8,6 @@ import {
   FiRefreshCw,
   FiTrash2,
   FiUpload,
-  FiXCircle,
 } from "react-icons/fi";
 import { CgClose } from "react-icons/cg";
 import Modal from "../Reusable/Modal";
@@ -316,16 +314,27 @@ const MasterFieldTable: React.FC = () => {
         dataIndex: "key",
         key: "key",
         sortable: true,
-        render: (value: string) => <span className="block max-w-xs truncate">{value}</span>,
+        width: 280,
+        render: (value: string) => (
+          <span className="block truncate" title={value}>
+            {value}
+          </span>
+        ),
       },
       {
         title: "Label",
         dataIndex: "label",
         key: "label",
         sortable: true,
-        render: (value: string, row: MasterField) => (
-          <span className="block max-w-xs truncate">{value || row.key}</span>
-        ),
+        width: 240,
+        render: (value: string, row: MasterField) => {
+          const label = value || row.key;
+          return (
+            <span className="block truncate" title={label}>
+              {label}
+            </span>
+          );
+        },
       },
       { title: "Type", dataIndex: "type", key: "type", sortable: true },
       {
@@ -336,10 +345,7 @@ const MasterFieldTable: React.FC = () => {
         render: (_: unknown, row: MasterField) => {
           const isReq = !!row.required;
           return (
-            <StatusBadge tone={isReq ? "danger" : "success"}>
-              {isReq ? <FiXCircle className="h-3.5 w-3.5" /> : <FiCheckCircle className="h-3.5 w-3.5" />}
-              {isReq ? "Required" : "Optional"}
-            </StatusBadge>
+            <StatusBadge tone="neutral">{isReq ? "Required" : "Optional"}</StatusBadge>
           );
         },
       },
@@ -356,11 +362,13 @@ const MasterFieldTable: React.FC = () => {
         dataIndex: "createdAt",
         key: "createdAt",
         sortable: true,
+        width: 130,
         render: (value: string) => (value ? prettyDate(value) : "-"),
       },
       {
         title: "Actions",
         dataIndex: "actions",
+        width: 148,
         render: (_: unknown, row: MasterField) => (
           <div className="flex items-center gap-2">
             <IconButton
@@ -405,7 +413,7 @@ const MasterFieldTable: React.FC = () => {
   );
 
   return (
-    <div className="mx-auto space-y-6 p-2 md:p-6">
+    <div className="mx-auto space-y-6">
       <PageHeader
         title="Manage Master Fields"
         description="Define your master schema keys and validation rules for mapping and form population."
